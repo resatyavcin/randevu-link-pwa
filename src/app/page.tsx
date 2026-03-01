@@ -68,23 +68,23 @@ export default function RegisterPage() {
 
       <GlassCard
         variant="glass"
-        className="w-full rounded-[20px] py-5 px-4 sm:py-6 sm:px-5 flex flex-col items-center gap-5"
+        className="w-full max-w-sm rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6"
       >
-        <div className="w-full text-left">
-          <h2 className="text-foreground font-extrabold tracking-tight text-lg mb-1.5">
+        <div className="w-full text-left space-y-1">
+          <h2 className="text-foreground font-extrabold tracking-tight text-lg">
             Kayıt Ol
           </h2>
-          <p className="text-muted-foreground text-sm mb-0">
+          <p className="text-muted-foreground text-sm">
             Kayıt sadece şirket ve işletme sahipleri içindir.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
           <div
-            className="flex h-11 items-center overflow-hidden rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] focus-within:outline-none dark:bg-input/30"
+            className="flex h-11 items-center overflow-hidden rounded-lg border border-input bg-background/50 shadow-sm transition-[color,box-shadow] focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] focus-within:outline-none dark:bg-input/20"
             role="group"
           >
             <span
-              className="flex shrink-0 items-center gap-1.5 border-r border-input pl-3 pr-2.5 text-base text-foreground"
+              className="flex shrink-0 items-center gap-2 border-r border-input bg-muted/30 px-3 py-2 text-sm text-foreground"
               aria-hidden
             >
               <img
@@ -94,7 +94,7 @@ export default function RegisterPage() {
                 width={20}
                 height={20}
               />
-              <span className="font-medium">+90</span>
+              <span className="font-semibold tabular-nums">+90</span>
             </span>
             <Input
               type="tel"
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                 const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
                 setPhone(digits);
               }}
-              className="h-11 flex-1 min-w-0 border-0 rounded-none bg-transparent px-3 py-1 text-base shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-11 flex-1 min-w-0 border-0 rounded-none bg-transparent px-3 py-2 text-base shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
               required
               aria-label="Telefon numarası"
             />
@@ -115,24 +115,24 @@ export default function RegisterPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-0.5 size-4 shrink-0 rounded border-input accent-primary"
+              className="mt-1 size-4 shrink-0 rounded border-input accent-primary"
               required
               aria-describedby="consent-label"
             />
             <span
               id="consent-label"
-              className="text-muted-foreground text-sm leading-snug"
+              className="text-muted-foreground text-sm leading-relaxed"
             >
               <a
                 href="/gizlilik"
-                className="text-foreground underline underline-offset-2 hover:opacity-80"
+                className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
               >
                 Gizlilik politikası
               </a>
               {" ve "}
               <a
                 href="/kvkk"
-                className="text-foreground underline underline-offset-2 hover:opacity-80"
+                className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
               >
                 KVKK aydınlatma metni
               </a>
@@ -142,7 +142,7 @@ export default function RegisterPage() {
           <Button
             type="submit"
             size="lg"
-            className="w-full"
+            className="w-full mt-1"
             disabled={!consent}
           >
             Kayıt ol
