@@ -45,7 +45,7 @@ export default function RootLayout({
           <ThemeSync />
           <OrientationLock />
           <QueryProvider>
-          <div data-vaul-drawer-wrapper className="min-h-screen">
+          <div data-scale-background-wrapper className="min-h-screen">
             {children}
           </div>
         </QueryProvider>
