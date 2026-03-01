@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { Drawer } from "vaul";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type NotificationSheetProps = {
@@ -16,6 +15,14 @@ export function NotificationSheet({
   open,
   onOpenChange,
 }: NotificationSheetProps) {
+  const [Drawer, setDrawer] = useState<typeof import("vaul").Drawer | null>(
+    null,
+  );
+
+  useEffect(() => {
+    import("vaul").then((m) => setDrawer(() => m.Drawer));
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const isDark = document.documentElement.classList.contains("dark");
@@ -30,6 +37,8 @@ export function NotificationSheet({
       if (prev !== undefined) document.body.style.background = prev;
     };
   }, [open]);
+
+  if (!Drawer) return null;
 
   return (
     <Drawer.Root
