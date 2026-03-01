@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Randevu Link PWA
 
-## Getting Started
+Next.js 16, TanStack Query, Zustand, shadcn/ui ve PWA (Serwist) ile kurulmuş proje.
 
-First, run the development server:
+## Kurulum
+
+```bash
+npm install
+```
+
+## Geliştirme
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production Build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## PWA İkonları
 
-## Learn More
+Uygulamanın ana ekrana eklenebilmesi için `public/icons/` klasörüne şu dosyaları ekleyin:
 
-To learn more about Next.js, take a look at the following resources:
+- `icon-192.png` (192x192 px)
+- `icon-512.png` (512x512 px)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Manifest (`src/app/manifest.ts`) bu yolları kullanır.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Teknolojiler
 
-## Deploy on Vercel
+- **Next.js 16** (App Router, Turbopack)
+- **TanStack Query** – API verisi (cache, refetch, stale, pagination, mutation) – `src/lib/query-client.ts`, `QueryProvider`
+- **Zustand** – uygulama durumu (tema, auth token, modallar, filtre UI) – `src/store/use-app-store.ts`
+- **shadcn/ui** – bileşen kütüphanesi (`npx shadcn@latest add <bileşen>`)
+- **Serwist** – PWA (service worker, offline sayfa)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Proje Yapısı
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/` – Sayfalar ve layout
+- `src/components/` – React bileşenleri (ui, providers)
+- `src/store/` – Zustand store’ları (use-app-store: tema, auth, modallar, sidebar)
+- `src/lib/` – query-client, utils
