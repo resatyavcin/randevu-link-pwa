@@ -11,32 +11,38 @@ const INITIAL_FEEDBACK_ITEMS: FeedbackItem[] = [
     avatar: "/avatars/uifaces-human-avatar.jpg",
     feedback:
       "Çok güzeldi, bayıldım. Gerçekten iyi bir uygulama, herkese tavsiye ederim.",
+    link: "/r/guzellik-evi",
   },
   {
     name: "Elit Kuaför",
     avatar: "/avatars/uifaces-human-avatar%20(1).jpg",
     feedback: "Randevu almak hiç bu kadar kolay olmamıştı. Süper deneyim.",
+    link: "/r/elit-kufor",
   },
   {
     name: "Şık Saç Salonu",
     avatar: "/avatars/uifaces-human-avatar%20(2).jpg",
     feedback: "Arayüz çok sade ve hızlı. Mobilde de kusursuz çalışıyor.",
+    link: "/r/sik-sac-salonu",
   },
   {
     name: "Princess Güzellik",
     avatar: "/avatars/uifaces-human-avatar%20(3).jpg",
     feedback:
       "Bayıldım! Hem hızlı hem güvenilir. Kesinlikle kullanmaya devam edeceğim.",
+    link: "/r/princess-guzellik",
   },
   {
     name: "Star Kuaför",
     avatar: "/avatars/uifaces-human-avatar%20(4).jpg",
     feedback: "İyi uygulama, çok memnun kaldım. Ekip tebrikleri hak ediyor.",
+    link: "/r/star-kufor",
   },
   {
     name: "Moda Kuaför",
     avatar: "/avatars/uifaces-human-avatar%20(5).jpg",
     feedback: "Çok güzel bir deneyim. Randevu linki paylaşmak çok pratik.",
+    link: "/r/moda-kufor",
   },
 ];
 

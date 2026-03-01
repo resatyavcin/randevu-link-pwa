@@ -1,12 +1,54 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { AppHeader } from "@/components/app-header";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FeedbackCarousel } from "@/components/ui/feedback-carousel";
 import { useAppStore } from "@/store";
+
+type DocOverlay = "gizlilik" | "kvkk" | null;
+
+const GIZLILIK_PLACEHOLDER = `
+Gizlilik Politikası (Örnek metin)
+
+1. Veri Sorumlusu
+Randevu Link uygulaması kapsamında kişisel verileriniz 6698 sayılı Kişisel Verilerin Korunması Kanunu uyarınca işlenmektedir.
+
+2. İşlenen Veriler
+Kayıt ve hizmet süreçlerinde telefon numarası, işletme adı ve randevu bilgileriniz toplanabilir.
+
+3. Amaç
+Toplanan veriler yalnızca randevu yönetimi, bildirimler ve hizmet kalitesi amacıyla kullanılır.
+
+4. Saklama ve Güvenlik
+Verileriniz güvenli ortamda saklanır; yasal süreler dışında silinir veya anonimleştirilir.
+
+5. Haklarınız
+KVKK 11. madde kapsamında başvuru haklarınız bulunmaktadır.
+
+Bu metin örnek amaçlıdır. Yayına almadan önce hukuki metinlerinizi güncelleyin.
+`.trim();
+
+const KVKK_PLACEHOLDER = `
+KVKK Aydınlatma Metni (Örnek metin)
+
+Veri Sorumlusu: Randevu Link
+
+Kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında, aydınlatma yükümlülüğümüz çerçevesinde işlenmektedir.
+
+İşleme Amaçları: Randevu oluşturma, hatırlatma, işletme ve kullanıcı yönetimi, yasal yükümlülüklerin yerine getirilmesi.
+
+İşleme Hukuki Sebepleri: Açık rızanız, sözleşmenin ifası, meşru menfaat.
+
+Aktarım: Verileriniz yalnızca yasal zorunluluk veya hizmet sağlayıcılar (sunucu, bildirim) ile sınırlı paylaşılabilir.
+
+Haklarınız: Bilgi talep etme, düzeltme, silme, itiraz ve şikâyet (Kişisel Verileri Koruma Kurulu) haklarına sahipsiniz.
+
+Bu metin örnek amaçlıdır. Yayına almadan önce hukuki metinlerinizi güncelleyin.
+`.trim();
 
 const CAROUSEL_INITIAL = {
   initialDelay: 2500,
@@ -26,6 +68,7 @@ function formatPhoneDisplay(digits: string): string {
 export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [consent, setConsent] = useState(false);
+  const [openDoc, setOpenDoc] = useState<DocOverlay>(null);
   const feedbackItems = useAppStore((s) => s.feedbackItems);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,8 +94,29 @@ export default function RegisterPage() {
 
       <GlassCard
         variant="glass"
-        className="w-full flex-1 min-h-0 rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
+        className="relative w-full flex-1 min-h-0 rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
       >
+        {openDoc && (
+          <div className="absolute inset-0 z-10 flex flex-col rounded-[20px] bg-background border border-border">
+            <div className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-3">
+              <button
+                type="button"
+                onClick={() => setOpenDoc(null)}
+                className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                aria-label="Geri"
+              >
+                <ArrowLeft className="size-4" />
+                Geri
+              </button>
+              <span className="text-sm font-semibold text-foreground">
+                {openDoc === "gizlilik" ? "Gizlilik politikası" : "KVKK aydınlatma metni"}
+              </span>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+              {openDoc === "gizlilik" ? GIZLILIK_PLACEHOLDER : KVKK_PLACEHOLDER}
+            </div>
+          </div>
+        )}
         <section
           className="w-full flex justify-center shrink-0 opacity-90"
           aria-label="Geri bildirimler"
@@ -96,7 +160,7 @@ export default function RegisterPage() {
             <Input
               type="tel"
               inputMode="numeric"
-              placeholder="545 454 54 54"
+              placeholder="5XX XXX XX XX"
               value={formatPhoneDisplay(phone)}
               onChange={(e) => {
                 const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
@@ -120,19 +184,21 @@ export default function RegisterPage() {
               id="consent-label"
               className="text-muted-foreground text-sm leading-relaxed"
             >
-              <a
-                href="/gizlilik"
+              <button
+                type="button"
+                onClick={() => setOpenDoc("gizlilik")}
                 className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
               >
                 Gizlilik politikası
-              </a>
+              </button>
               {" ve "}
-              <a
-                href="/kvkk"
+              <button
+                type="button"
+                onClick={() => setOpenDoc("kvkk")}
                 className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
               >
                 KVKK aydınlatma metni
-              </a>
+              </button>
               {"ni okudum, kabul ediyorum."}
             </span>
           </label>
@@ -146,6 +212,15 @@ export default function RegisterPage() {
           </Button>
         </form>
       </GlassCard>
+
+      <footer className="shrink-0 py-4 text-center space-y-1">
+        <p className="text-xs text-muted-foreground dark:text-muted-foreground/70">
+          Randevu Link · v0.1
+        </p>
+        <p className="text-[10px] text-muted-foreground dark:text-muted-foreground/50">
+          © {new Date().getFullYear()} Tüm hakları saklıdır.
+        </p>
+      </footer>
     </div>
   );
 }

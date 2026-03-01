@@ -8,12 +8,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // ── Types ───────────────────────────────────────────────────────────
 
 export interface FeedbackItem {
-  /** Kullanıcı adı */
+  /** Salon / işletme adı */
   name: string;
   /** Avatar görsel URL'i */
   avatar: string;
   /** Geri bildirim / yorum metni */
   feedback: string;
+  /** Salon linki (opsiyonel, varsa ad tıklanabilir olur) */
+  link?: string;
 }
 
 export type CarouselVariant = "muted" | "dark";
@@ -154,12 +156,14 @@ const variantStyles: Record<
   { name: string; feedback: string }
 > = {
   muted: {
-    name: "text-gray-500 dark:text-[#f5f5f5] font-extrabold tracking-tight text-base",
-    feedback: "text-gray-500 dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
+    name: "text-gray-500 dark:text-[#f5f5f5] font-extrabold tracking-tight text-sm",
+    feedback:
+      "text-gray-500 dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
   },
   dark: {
-    name: "text-[#5c5868] dark:text-[#f5f5f5] font-extrabold tracking-tight text-base",
-    feedback: "text-[#6d6878] dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
+    name: "text-[#5c5868] dark:text-[#f5f5f5] font-extrabold tracking-tight text-sm",
+    feedback:
+      "text-[#6d6878] dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
   },
 };
 
@@ -197,7 +201,7 @@ function FeedbackSlot({
       role="group"
       aria-roledescription="slide"
       aria-label={item.name}
-      className="overflow-hidden flex flex-1 min-w-0 items-stretch justify-center px-3 py-2 min-h-[120px]"
+      className="overflow-hidden flex flex-1 min-w-0 items-stretch justify-center min-h-[120px]"
     >
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
@@ -231,10 +235,24 @@ function FeedbackSlot({
             </AvatarFallback>
           </Avatar>
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-            <span className={cn("line-clamp-1", styles.name)}>{item.name}</span>
             <p className={cn("line-clamp-3", styles.feedback)}>
               &ldquo;{item.feedback}&rdquo;
             </p>
+            {item.link ? (
+              <a
+                href={item.link}
+                className={cn(
+                  "line-clamp-1 underline-offset-2 hover:underline",
+                  styles.name
+                )}
+              >
+                {item.name}, {new Date().getFullYear()}
+              </a>
+            ) : (
+              <span className={cn("line-clamp-1", styles.name)}>
+                {item.name}, {new Date().getFullYear()}
+              </span>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
