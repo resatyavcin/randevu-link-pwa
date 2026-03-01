@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Drawer } from "vaul";
 import { cn } from "@/lib/utils";
 
@@ -8,10 +9,28 @@ type NotificationSheetProps = {
   onOpenChange: (open: boolean) => void;
 };
 
+/** Dark modda scale arka planının belli olması için body rengi */
+const SCALE_BG_DARK = "rgb(23, 23, 23)";
+
 export function NotificationSheet({
   open,
   onOpenChange,
 }: NotificationSheetProps) {
+  useEffect(() => {
+    if (!open) return;
+    const isDark = document.documentElement.classList.contains("dark");
+    if (!isDark) return;
+    let prev: string | undefined;
+    const id = setTimeout(() => {
+      prev = document.body.style.background;
+      document.body.style.background = SCALE_BG_DARK;
+    }, 50);
+    return () => {
+      clearTimeout(id);
+      if (prev !== undefined) document.body.style.background = prev;
+    };
+  }, [open]);
+
   return (
     <Drawer.Root
       open={open}
@@ -20,7 +39,7 @@ export function NotificationSheet({
       shouldScaleBackground
     >
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/50" />
+        <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/50 dark:bg-black/70" />
         <Drawer.Content
           className={cn(
             "flex flex-col bg-background outline-none z-[60]",

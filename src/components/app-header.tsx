@@ -1,12 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
-import { NotificationSheet } from "@/components/notification-sheet";
 import { useAppStore } from "@/store";
+
+const NotificationSheet = dynamic(
+  () =>
+    import("@/components/notification-sheet").then((m) => ({
+      default: m.NotificationSheet,
+    })),
+  { ssr: false },
+);
 
 function useResolvedDark() {
   const theme = useAppStore((s) => s.theme);
