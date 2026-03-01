@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Drawer } from "vaul";
 import { cn } from "@/lib/utils";
 
 type NotificationSheetProps = {
@@ -15,14 +16,6 @@ export function NotificationSheet({
   open,
   onOpenChange,
 }: NotificationSheetProps) {
-  const [Drawer, setDrawer] = useState<typeof import("vaul").Drawer | null>(
-    null,
-  );
-
-  useEffect(() => {
-    import("vaul").then((m) => setDrawer(() => m.Drawer));
-  }, []);
-
   useEffect(() => {
     if (!open) return;
     const isDark = document.documentElement.classList.contains("dark");
@@ -38,8 +31,6 @@ export function NotificationSheet({
     };
   }, [open]);
 
-  if (!Drawer) return null;
-
   return (
     <Drawer.Root
       open={open}
@@ -48,10 +39,10 @@ export function NotificationSheet({
       shouldScaleBackground
     >
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/50 dark:bg-black/70" />
+        <Drawer.Overlay className="fixed inset-0 z-60 bg-black/50 dark:bg-black/70" />
         <Drawer.Content
           className={cn(
-            "flex flex-col bg-background outline-none z-[60]",
+            "flex flex-col bg-background outline-none z-60",
             "fixed bottom-0 left-0 right-0 h-[90dvh] max-h-[90dvh]",
             "rounded-t-[10px] border-t border-border",
             "pt-[max(env(safe-area-inset-top),0.75rem)] pb-[max(env(safe-area-inset-bottom),1rem)]",
