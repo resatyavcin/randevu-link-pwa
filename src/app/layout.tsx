@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { ThemeSync } from "@/components/theme-sync";
+import { OrientationLock } from "@/components/orientation-lock";
 import { SerwistProvider } from "./serwist-client";
 
 const geistSans = Geist({
@@ -42,6 +43,7 @@ export default function RootLayout({
       >
         <SerwistProvider swUrl="/serwist/sw.js">
           <ThemeSync />
+          <OrientationLock />
           <QueryProvider>{children}</QueryProvider>
         </SerwistProvider>
       </body>

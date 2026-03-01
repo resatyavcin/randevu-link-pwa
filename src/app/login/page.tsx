@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { AppHeader } from "@/components/app-header";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -11,54 +10,12 @@ import { Input } from "@/components/ui/input";
 import { FeedbackCarousel } from "@/components/ui/feedback-carousel";
 import { useAppStore } from "@/store";
 
-type DocOverlay = "gizlilik" | "kvkk" | null;
-
-const GIZLILIK_PLACEHOLDER = `
-Gizlilik Politikası (Örnek metin)
-
-1. Veri Sorumlusu
-Randevu Link uygulaması kapsamında kişisel verileriniz 6698 sayılı Kişisel Verilerin Korunması Kanunu uyarınca işlenmektedir.
-
-2. İşlenen Veriler
-Kayıt ve hizmet süreçlerinde telefon numarası, işletme adı ve randevu bilgileriniz toplanabilir.
-
-3. Amaç
-Toplanan veriler yalnızca randevu yönetimi, bildirimler ve hizmet kalitesi amacıyla kullanılır.
-
-4. Saklama ve Güvenlik
-Verileriniz güvenli ortamda saklanır; yasal süreler dışında silinir veya anonimleştirilir.
-
-5. Haklarınız
-KVKK 11. madde kapsamında başvuru haklarınız bulunmaktadır.
-
-Bu metin örnek amaçlıdır. Yayına almadan önce hukuki metinlerinizi güncelleyin.
-`.trim();
-
-const KVKK_PLACEHOLDER = `
-KVKK Aydınlatma Metni (Örnek metin)
-
-Veri Sorumlusu: Randevu Link
-
-Kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında, aydınlatma yükümlülüğümüz çerçevesinde işlenmektedir.
-
-İşleme Amaçları: Randevu oluşturma, hatırlatma, işletme ve kullanıcı yönetimi, yasal yükümlülüklerin yerine getirilmesi.
-
-İşleme Hukuki Sebepleri: Açık rızanız, sözleşmenin ifası, meşru menfaat.
-
-Aktarım: Verileriniz yalnızca yasal zorunluluk veya hizmet sağlayıcılar (sunucu, bildirim) ile sınırlı paylaşılabilir.
-
-Haklarınız: Bilgi talep etme, düzeltme, silme, itiraz ve şikâyet (Kişisel Verileri Koruma Kurulu) haklarına sahipsiniz.
-
-Bu metin örnek amaçlıdır. Yayına almadan önce hukuki metinlerinizi güncelleyin.
-`.trim();
-
 const CAROUSEL_INITIAL = {
   initialDelay: 2500,
   slotStagger: 150,
   cycleInterval: 4000,
 } as const;
 
-/** 10 haneli numarayı "545 454 54 54" formatına çevirir */
 function formatPhoneDisplay(digits: string): string {
   const d = digits.replace(/\D/g, "").slice(0, 10);
   if (d.length <= 3) return d;
@@ -67,26 +24,24 @@ function formatPhoneDisplay(digits: string): string {
   return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6, 8)} ${d.slice(8)}`;
 }
 
-const PHONE_ERROR_MSG =
-  "Geçerli bir cep telefonu numarası girin (5XX XXX XX XX)";
-
 function validatePhone(digits: string): boolean {
   return digits.length === 10 && digits[0] === "5";
 }
 
+const PHONE_ERROR_MSG = "Geçerli bir cep telefonu numarası girin (5XX XXX XX XX)";
 const CODE_ERROR_MSG = "Lütfen 6 haneli doğrulama kodunu girin.";
 
 type Step = "phone" | "code";
 
 const PANEL_PATH = "/panel";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter();
   const authToken = useAppStore((s) => s.authToken);
+  const setAuthToken = useAppStore((s) => s.setAuthToken);
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
-  const [openDoc, setOpenDoc] = useState<DocOverlay>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);
   const feedbackItems = useAppStore((s) => s.feedbackItems);
@@ -108,14 +63,12 @@ export default function RegisterPage() {
       return;
     }
     setPhoneError(null);
-    // TODO: API ile SMS kodu gönder
-    console.log("Register phone, send code:", `+90${digits}`);
+    // TODO: API ile giriş SMS kodu gönder
+    console.log("Login phone, send code:", `+90${digits}`);
     setStep("code");
     setCode("");
     setCodeError(null);
   };
-
-  const setAuthToken = useAppStore((s) => s.setAuthToken);
 
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,8 +79,8 @@ export default function RegisterPage() {
     }
     setCodeError(null);
     // TODO: API ile kodu doğrula; başarılıysa token dönüp setAuthToken(token) yapın
-    console.log("Verify code:", cleanCode);
-    setAuthToken("demo-token"); // Örnek: API başarılı olduğunda token set edin
+    console.log("Verify login code:", cleanCode);
+    setAuthToken("demo-token");
     router.replace(PANEL_PATH);
   };
 
@@ -136,6 +89,10 @@ export default function RegisterPage() {
     setCode("");
     setCodeError(null);
   };
+
+  if (authToken !== null) {
+    return null;
+  }
 
   return (
     <div
@@ -155,29 +112,6 @@ export default function RegisterPage() {
         variant="glass"
         className="relative w-full flex-1 min-h-0 rounded-3xl py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
       >
-        {openDoc && (
-          <div className="absolute inset-0 z-10 flex flex-col rounded-3xl bg-background border border-border">
-            <div className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-3">
-              <button
-                type="button"
-                onClick={() => setOpenDoc(null)}
-                className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-                aria-label="Geri"
-              >
-                <ArrowLeft className="size-4" />
-                Geri
-              </button>
-              <span className="text-sm font-semibold text-foreground">
-                {openDoc === "gizlilik"
-                  ? "Gizlilik politikası"
-                  : "KVKK aydınlatma metni"}
-              </span>
-            </div>
-            <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
-              {openDoc === "gizlilik" ? GIZLILIK_PLACEHOLDER : KVKK_PLACEHOLDER}
-            </div>
-          </div>
-        )}
         <section
           className="w-full flex justify-center shrink-0 opacity-90 pt-1.5"
           aria-label="Geri bildirimler"
@@ -194,21 +128,17 @@ export default function RegisterPage() {
         </section>
         <div className="w-full text-left space-y-1">
           <h2 className="text-foreground font-extrabold tracking-tight text-lg">
-            {step === "phone" ? "Kayıt Ol" : "Doğrulama kodu"}
+            {step === "phone" ? "Giriş yap" : "Doğrulama kodu"}
           </h2>
           <p className="text-muted-foreground text-sm">
             {step === "phone"
-              ? "Kayıt sadece şirket ve işletme sahipleri içindir."
+              ? "Hesabınıza giriş yapmak için telefon numaranızı girin."
               : `${formatPhoneDisplay(phone)} numarasına gönderilen 6 haneli kodu girin.`}
           </p>
         </div>
 
         {step === "phone" ? (
-          <form
-            onSubmit={handlePhoneSubmit}
-            noValidate
-            className="w-full flex flex-col gap-4"
-          >
+          <form onSubmit={handlePhoneSubmit} noValidate className="w-full flex flex-col gap-4">
             <div className="space-y-1.5">
               <div
                 className={`flex h-11 items-center overflow-hidden rounded-lg border bg-background/50 shadow-sm transition-[color,box-shadow] focus-within:ring-[3px] focus-within:outline-none dark:bg-input/20 ${
@@ -246,61 +176,33 @@ export default function RegisterPage() {
                       setPhoneError(PHONE_ERROR_MSG);
                   }}
                   className="h-11 flex-1 min-w-0 border-0 rounded-none bg-transparent px-3 py-2 text-base shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
-                  required
                   aria-label="Telefon numarası"
                   aria-invalid={isPhoneInvalid}
                   aria-describedby={isPhoneInvalid ? "phone-error" : undefined}
                 />
               </div>
               {isPhoneInvalid && (
-                <p
-                  id="phone-error"
-                  className="text-sm text-destructive"
-                  role="alert"
-                >
+                <p id="phone-error" className="text-sm text-destructive" role="alert">
                   {phoneError}
                 </p>
               )}
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Devam ederek{" "}
-              <button
-                type="button"
-                onClick={() => setOpenDoc("gizlilik")}
-                className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
-              >
-                Gizlilik politikası
-              </button>
-              {" ve "}
-              <button
-                type="button"
-                onClick={() => setOpenDoc("kvkk")}
-                className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
-              >
-                KVKK aydınlatma metni
-              </button>
-              {"ni kabul etmiş olursunuz."}
-            </p>
-            <Button type="submit" size="lg" className="w-full mt-1">
-              Kayıt ol
+            <Button type="submit" size="lg" className="w-full">
+              Kod gönder
             </Button>
-            <p className="text-center text-sm text-muted-foreground mt-3">
-              Hesabınız varsa{" "}
+            <p className="text-center text-sm text-muted-foreground">
+              Hesabınız yoksa{" "}
               <Link
-                href="/login"
+                href="/"
                 className="text-foreground font-medium underline underline-offset-2 hover:text-foreground/90"
               >
-                giriş yapın
+                kayıt olun
               </Link>
               .
             </p>
           </form>
         ) : (
-          <form
-            onSubmit={handleCodeSubmit}
-            noValidate
-            className="w-full flex flex-col gap-4"
-          >
+          <form onSubmit={handleCodeSubmit} noValidate className="w-full flex flex-col gap-4">
             <div className="space-y-1.5">
               <div
                 className={`flex h-12 items-center justify-center gap-1.5 rounded-lg border bg-background/50 px-2 shadow-sm transition-[color,box-shadow] focus-within:ring-[3px] focus-within:outline-none dark:bg-input/20 ${
@@ -324,8 +226,7 @@ export default function RegisterPage() {
                   }}
                   onBlur={() => {
                     const c = code.replace(/\D/g, "").slice(0, 6);
-                    if (c.length > 0 && c.length !== 6)
-                      setCodeError(CODE_ERROR_MSG);
+                    if (c.length > 0 && c.length !== 6) setCodeError(CODE_ERROR_MSG);
                   }}
                   className="h-11 w-full text-center text-xl font-semibold tabular-nums tracking-[0.35em] border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:tracking-normal placeholder:font-normal placeholder:text-muted-foreground"
                   aria-label="6 haneli doğrulama kodu"
@@ -344,7 +245,7 @@ export default function RegisterPage() {
               )}
             </div>
             <Button type="submit" size="lg" className="w-full">
-              Doğrula
+              Giriş yap
             </Button>
             <button
               type="button"

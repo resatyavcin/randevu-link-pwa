@@ -243,7 +243,7 @@ function FeedbackSlot({
                 href={item.link}
                 className={cn(
                   "line-clamp-1 underline-offset-2 hover:underline",
-                  styles.name
+                  styles.name,
                 )}
               >
                 {item.name}, {new Date().getFullYear()}
