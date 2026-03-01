@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Drawer } from "vaul";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 type NotificationSheetProps = {
   open: boolean;
