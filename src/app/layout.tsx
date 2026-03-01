@@ -44,7 +44,11 @@ export default function RootLayout({
         <SerwistProvider swUrl="/serwist/sw.js">
           <ThemeSync />
           <OrientationLock />
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+          <div data-vaul-drawer-wrapper className="min-h-screen">
+            {children}
+          </div>
+        </QueryProvider>
         </SerwistProvider>
       </body>
     </html>
