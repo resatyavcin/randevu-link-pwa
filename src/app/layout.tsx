@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { ThemeSync } from "@/components/theme-sync";
 import { SerwistProvider } from "./serwist-client";
 
 const geistSans = Geist({
@@ -40,6 +41,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <SerwistProvider swUrl="/serwist/sw.js">
+          <ThemeSync />
           <QueryProvider>{children}</QueryProvider>
         </SerwistProvider>
       </body>

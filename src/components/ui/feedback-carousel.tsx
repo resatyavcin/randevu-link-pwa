@@ -154,12 +154,12 @@ const variantStyles: Record<
   { name: string; feedback: string }
 > = {
   muted: {
-    name: "text-gray-500 font-extrabold tracking-tight text-base",
-    feedback: "text-gray-500 text-sm sm:text-base font-medium",
+    name: "text-gray-500 dark:text-[#f5f5f5] font-extrabold tracking-tight text-base",
+    feedback: "text-gray-500 dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
   },
   dark: {
-    name: "text-[#5c5868] font-extrabold tracking-tight text-base",
-    feedback: "text-[#6d6878] text-sm sm:text-base font-medium",
+    name: "text-[#5c5868] dark:text-[#f5f5f5] font-extrabold tracking-tight text-base",
+    feedback: "text-[#6d6878] dark:text-[#f5f5f5] text-sm sm:text-base font-medium",
   },
 };
 

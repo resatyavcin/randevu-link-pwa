@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { AppHeader } from "@/components/app-header";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/ui/logo";
 import { FeedbackCarousel } from "@/components/ui/feedback-carousel";
 import { useAppStore } from "@/store";
 
@@ -37,7 +37,7 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen p-5 sm:p-6 md:p-8 bg-background flex flex-col items-center gap-4"
+      className="min-h-screen px-5 pt-2 pb-5 bg-background flex flex-col items-center gap-4"
       style={{
         backgroundImage: [
           "radial-gradient(ellipse 80% 80% at 30% 55%, rgba(120, 80, 200, 0.42), transparent 45%)",
@@ -47,29 +47,26 @@ export default function RegisterPage() {
         ].join(", "),
       }}
     >
-      <header className="flex shrink-0 flex-col items-center gap-0 pt-2">
-        <Logo />
-      </header>
-
-      <section
-        className="w-full flex justify-center shrink-0 opacity-80 mb-2"
-        aria-label="Geri bildirimler"
-      >
-        <FeedbackCarousel
-          items={feedbackItems}
-          initialDelay={CAROUSEL_INITIAL.initialDelay}
-          slotStagger={CAROUSEL_INITIAL.slotStagger}
-          cycleInterval={CAROUSEL_INITIAL.cycleInterval}
-          variant="dark"
-          ariaLabel="Kullanıcı geri bildirimleri"
-          maxSlots={1}
-        />
-      </section>
+      <AppHeader />
 
       <GlassCard
         variant="glass"
-        className="w-full max-w-sm rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6"
+        className="w-full flex-1 min-h-0 rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
       >
+        <section
+          className="w-full flex justify-center shrink-0 opacity-90"
+          aria-label="Geri bildirimler"
+        >
+          <FeedbackCarousel
+            items={feedbackItems}
+            initialDelay={CAROUSEL_INITIAL.initialDelay}
+            slotStagger={CAROUSEL_INITIAL.slotStagger}
+            cycleInterval={CAROUSEL_INITIAL.cycleInterval}
+            variant="dark"
+            ariaLabel="Kullanıcı geri bildirimleri"
+            maxSlots={1}
+          />
+        </section>
         <div className="w-full text-left space-y-1">
           <h2 className="text-foreground font-extrabold tracking-tight text-lg">
             Kayıt Ol
