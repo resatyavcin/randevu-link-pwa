@@ -80,7 +80,7 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen px-5 pt-2 pb-5 bg-background flex flex-col items-center gap-4"
+      className="min-h-screen p-3 sm:px-5 sm:pt-2 sm:pb-5 bg-background flex flex-col items-center gap-4 overscroll-none"
       style={{
         backgroundImage: [
           "radial-gradient(ellipse 80% 80% at 30% 55%, rgba(120, 80, 200, 0.42), transparent 45%)",
@@ -94,10 +94,10 @@ export default function RegisterPage() {
 
       <GlassCard
         variant="glass"
-        className="relative w-full flex-1 min-h-0 rounded-[20px] py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
+        className="relative w-full flex-1 min-h-0 rounded-3xl py-6 px-5 sm:py-8 sm:px-6 flex flex-col items-center gap-6 overflow-auto"
       >
         {openDoc && (
-          <div className="absolute inset-0 z-10 flex flex-col rounded-[20px] bg-background border border-border">
+          <div className="absolute inset-0 z-10 flex flex-col rounded-3xl bg-background border border-border">
             <div className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-3">
               <button
                 type="button"
@@ -118,7 +118,7 @@ export default function RegisterPage() {
           </div>
         )}
         <section
-          className="w-full flex justify-center shrink-0 opacity-90"
+          className="w-full flex justify-center shrink-0 opacity-90 pt-1.5"
           aria-label="Geri bildirimler"
         >
           <FeedbackCarousel
