@@ -2,15 +2,14 @@
 
 import { AppHeader } from "@/components/app-header";
 import { BottomNav } from "@/components/bottom-nav";
-import { useAppStore } from "@/store";
 
 export default function PanelPage() {
-  const authToken = useAppStore((s) => s.authToken);
-  const setAuthToken = useAppStore((s) => s.setAuthToken);
-
   return (
-    <div className="fixed inset-0 top-0 left-0 right-0 bottom-0 overflow-y-auto overflow-x-hidden overscroll-y-auto p-3 sm:px-5 sm:pt-2 pb-24 bg-background flex flex-col items-center gap-4">
-      <AppHeader />
+    <div className="fixed inset-0 flex flex-col bg-background">
+      <header className="shrink-0 px-3 sm:px-5 pt-2 pb-0 bg-background">
+        <AppHeader />
+      </header>
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-auto p-3 sm:px-5 sm:pt-2 pb-24 flex flex-col items-center gap-4">
       <main className="w-full max-w-lg flex flex-col gap-4 flex-1">
         <h1 className="text-foreground font-extrabold tracking-tight text-xl">
           Panel
@@ -19,16 +18,8 @@ export default function PanelPage() {
           Hesabınıza hoş geldiniz. Randevu ve işletme yönetimi buradan
           yapılacak.
         </p>
-        {authToken !== null && (
-          <button
-            type="button"
-            onClick={() => setAuthToken(null)}
-            className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
-          >
-            Çıkış yap
-          </button>
-        )}
       </main>
+      </div>
       <BottomNav />
     </div>
   );

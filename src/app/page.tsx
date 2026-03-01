@@ -79,10 +79,12 @@ const CODE_ERROR_MSG = "Lütfen 6 haneli doğrulama kodunu girin.";
 type Step = "phone" | "code";
 
 const PANEL_PATH = "/panel";
+const ONBOARDING_PATH = "/onboarding";
 
 export default function RegisterPage() {
   const router = useRouter();
   const authToken = useAppStore((s) => s.authToken);
+  const onboardingCompleted = useAppStore((s) => s.onboardingCompleted);
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -93,9 +95,9 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (authToken) {
-      router.replace(PANEL_PATH);
+      router.replace(onboardingCompleted ? PANEL_PATH : ONBOARDING_PATH);
     }
-  }, [authToken, router]);
+  }, [authToken, onboardingCompleted, router]);
 
   const digits = phone.replace(/\D/g, "").slice(0, 10);
   const isPhoneInvalid = phoneError !== null;
@@ -128,7 +130,7 @@ export default function RegisterPage() {
     // TODO: API ile kodu doğrula; başarılıysa token dönüp setAuthToken(token) yapın
     console.log("Verify code:", cleanCode);
     setAuthToken("demo-token"); // Örnek: API başarılı olduğunda token set edin
-    router.replace(PANEL_PATH);
+    router.replace(ONBOARDING_PATH);
   };
 
   const backToPhone = () => {

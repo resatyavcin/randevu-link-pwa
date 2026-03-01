@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Building2, Bell } from "lucide-react";
+import { Home, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppStore } from "@/store";
 
 /** İsimden baş harfleri: "Reşat Yavçin" → "RY". İleride auth'dan gelecek. */
 function getInitials(name: string): string {
@@ -71,12 +70,6 @@ export function BottomNav({
   className?: string;
 }) {
   const pathname = usePathname();
-  const setNotificationSheetOpen = useAppStore(
-    (s) => s.setNotificationSheetOpen,
-  );
-  const notificationSheetOpen = useAppStore(
-    (s) => s.notificationSheetOpen,
-  );
 
   const isSirketim = pathname === "/panel/sirketim" || pathname.startsWith("/panel/sirketim/");
   const isPanel = pathname === "/panel";
@@ -95,21 +88,6 @@ export function BottomNav({
     >
       <div className="flex flex-1 min-w-0 justify-center">
         <Link
-          href="/panel/sirketim"
-          className={cn(
-            navLinkBase,
-            isSirketim
-              ? "text-primary bg-primary/10"
-              : "text-foreground hover:bg-muted",
-          )}
-          aria-label="Şirketim"
-          aria-current={isSirketim ? "page" : undefined}
-        >
-          <Building2 className="size-5" strokeWidth={2} />
-        </Link>
-      </div>
-      <div className="flex flex-1 min-w-0 justify-center">
-        <Link
           href="/panel"
           className={cn(
             navLinkBase,
@@ -124,20 +102,19 @@ export function BottomNav({
         </Link>
       </div>
       <div className="flex flex-1 min-w-0 justify-center">
-        <button
-          type="button"
-          onClick={() => setNotificationSheetOpen(true)}
+        <Link
+          href="/panel/sirketim"
           className={cn(
             navLinkBase,
-            notificationSheetOpen
+            isSirketim
               ? "text-primary bg-primary/10"
               : "text-foreground hover:bg-muted",
           )}
-          aria-label="Bildirimler"
-          aria-current={notificationSheetOpen ? "true" : undefined}
+          aria-label="Şirketim"
+          aria-current={isSirketim ? "page" : undefined}
         >
-          <Bell className="size-5" strokeWidth={2} />
-        </button>
+          <Building2 className="size-5" strokeWidth={2} />
+        </Link>
       </div>
       <div className="flex flex-1 min-w-0 justify-center">
         <BottomNavAvatar
