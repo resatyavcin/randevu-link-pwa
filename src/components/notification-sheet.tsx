@@ -69,7 +69,7 @@ export function NotificationSheet({
         side="bottom"
         showCloseButton={false}
         className={cn(
-          "z-60 h-[90dvh] max-h-[90dvh] rounded-t-[10px] p-0",
+          "z-60 flex h-[90dvh] max-h-[90dvh] flex-col gap-0 rounded-t-[10px] p-0",
           "pt-[max(env(safe-area-inset-top),0.75rem)] pb-[max(env(safe-area-inset-bottom),1rem)]",
         )}
       >
@@ -79,7 +79,7 @@ export function NotificationSheet({
             Bildirimler
           </SheetTitle>
         </div>
-        <div className="flex-1 overflow-auto px-4 py-4">
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 py-4">
           <p className="text-sm text-muted-foreground">
             Henüz bildirim yok. Randevu hatırlatmaları ve güncellemeler burada
             görünecek.

@@ -67,6 +67,10 @@ interface AppState {
   // Geri bildirimler (carousel)
   feedbackItems: FeedbackItem[];
   setFeedbackItems: (items: FeedbackItem[]) => void;
+
+  // Bildirimler sheet (header + bottom nav)
+  notificationSheetOpen: boolean;
+  setNotificationSheetOpen: (open: boolean) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -85,4 +89,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   feedbackItems: INITIAL_FEEDBACK_ITEMS,
   setFeedbackItems: (items) => set({ feedbackItems: items }),
+
+  notificationSheetOpen: false,
+  setNotificationSheetOpen: (open) => set({ notificationSheetOpen: open }),
 }));
