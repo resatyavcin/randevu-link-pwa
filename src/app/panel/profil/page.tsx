@@ -33,7 +33,7 @@ export default function ProfilPage() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
-      <header className="shrink-0 px-3 sm:px-5 pt-2 pb-0 bg-background">
+      <header className="shrink-0 px-3 sm:px-5 pt-2 pb-2 bg-background/70 dark:bg-background/60 backdrop-blur-md">
         <AppHeader />
       </header>
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-auto p-3 sm:px-5 sm:pt-2 pb-24 flex flex-col items-center gap-4">

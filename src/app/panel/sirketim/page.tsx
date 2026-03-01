@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { GlassCard } from "@/components/ui/glass-card";
 import { BottomSheet } from "@/components/bottom-sheet";
 import { useAppStore } from "@/store";
 import { cn } from "@/lib/utils";
@@ -88,7 +89,7 @@ export default function SirketimPage() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
-      <header className="shrink-0 px-3 sm:px-5 pt-2 pb-0 bg-background">
+      <header className="shrink-0 px-3 sm:px-5 pt-2 pb-2 bg-background/70 dark:bg-background/60 backdrop-blur-md">
         <AppHeader />
       </header>
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-auto p-3 sm:px-5 sm:pt-2 pb-24 flex flex-col items-center gap-4">
@@ -97,8 +98,15 @@ export default function SirketimPage() {
             Şirketim
           </h1>
 
-          {/* Salon + Randevu linki tek kart */}
-          <div className="flex flex-col gap-4 p-4 rounded-2xl bg-muted/40 border border-border shadow-sm">
+          {/* Salon + Randevu linki tek kart — arkada spot gradient */}
+          <div
+            className="relative rounded-2xl p-px"
+            style={{
+              background:
+                "radial-gradient(ellipse 90% 70% at 50% 40%, rgba(124, 58, 237, 0.18), transparent 65%)",
+            }}
+          >
+            <GlassCard variant="glass" className="flex flex-col gap-4 p-4 rounded-2xl">
             <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4">
               <Avatar className="size-16 sm:size-20 rounded-xl shrink-0 ring-2 ring-border/50">
                 {salonLogoUrl ? (
@@ -188,6 +196,7 @@ export default function SirketimPage() {
                 </div>
               </div>
             </div>
+          </GlassCard>
           </div>
 
           {/* Servisler */}
@@ -259,43 +268,52 @@ export default function SirketimPage() {
                 </div>
               </div>
             )}
-            <ul className="flex flex-col gap-2">
-              {services.length === 0 && !showAddService && (
-                <li className="text-sm text-muted-foreground py-2 px-3 rounded-lg bg-muted/20">
-                  Henüz servis yok. &quot;Servis ekle&quot; ile ekleyin.
-                </li>
-              )}
-              {services.map((s) => (
-                <li
-                  key={s.id}
-                  className="flex items-center justify-between gap-2 py-2.5 px-3 rounded-xl bg-muted/40 border border-border group"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-foreground truncate">
-                      {s.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {[
-                        s.durationMinutes != null && `${s.durationMinutes} dk`,
-                        s.price != null && `${s.price} ₺`,
-                      ]
-                        .filter(Boolean)
-                        .join(" · ") || "—"}
-                    </p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    className="shrink-0 text-muted-foreground hover:text-destructive opacity-70 group-hover:opacity-100"
-                    onClick={() => removeService(s.id)}
-                    aria-label="Servisi sil"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <div
+              className="relative rounded-2xl p-px"
+              style={{
+                background:
+                  "radial-gradient(ellipse 90% 70% at 50% 40%, rgba(124, 58, 237, 0.18), transparent 65%)",
+              }}
+            >
+              <ul className="flex flex-col gap-2">
+                {services.length === 0 && !showAddService && (
+                  <li>
+                    <GlassCard variant="glassSubtle" className="py-2.5 px-3 rounded-xl text-sm text-muted-foreground">
+                      Henüz servis yok. &quot;Servis ekle&quot; ile ekleyin.
+                    </GlassCard>
+                  </li>
+                )}
+                {services.map((s) => (
+                  <li key={s.id} className="group">
+                    <GlassCard variant="glass" className="flex flex-row items-center justify-between gap-2 py-2.5 px-3 rounded-xl">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-foreground truncate">
+                          {s.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {[
+                            s.durationMinutes != null && `${s.durationMinutes} dk`,
+                            s.price != null && `${s.price} ₺`,
+                          ]
+                            .filter(Boolean)
+                            .join(" · ") || "—"}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        className="shrink-0 text-muted-foreground hover:text-destructive opacity-70 group-hover:opacity-100"
+                        onClick={() => removeService(s.id)}
+                        aria-label="Servisi sil"
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </GlassCard>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
 
           {/* Çalışanlar */}
@@ -356,49 +374,56 @@ export default function SirketimPage() {
                 </div>
               </div>
             )}
-            <ul className="flex flex-col gap-2">
-              {employees.length === 0 && !showAddEmployee && (
-                <li className="text-sm text-muted-foreground py-2 px-3 rounded-lg bg-muted/20">
-                  Henüz çalışan yok. &quot;Çalışan ekle&quot; ile ekleyin.
-                </li>
-              )}
-              {employees.map((e) => (
-                <li
-                  key={e.id}
-                  className={cn(
-                    "flex items-center justify-between gap-2 py-2.5 px-3 rounded-xl bg-muted/40 border border-border group",
-                  )}
-                >
-                  <div className="min-w-0 flex-1 flex items-center gap-2">
-                    <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <span className="text-xs font-medium text-primary">
-                        {e.name.slice(0, 2).toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-medium text-foreground truncate">
-                        {e.name}
-                      </p>
-                      {e.role && (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {e.role}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    className="shrink-0 text-muted-foreground hover:text-destructive opacity-70 group-hover:opacity-100"
-                    onClick={() => removeEmployee(e.id)}
-                    aria-label="Çalışanı sil"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <div
+              className="relative rounded-2xl p-px"
+              style={{
+                background:
+                  "radial-gradient(ellipse 90% 70% at 50% 40%, rgba(124, 58, 237, 0.18), transparent 65%)",
+              }}
+            >
+              <ul className="flex flex-col gap-2">
+                {employees.length === 0 && !showAddEmployee && (
+                  <li>
+                    <GlassCard variant="glassSubtle" className="py-2.5 px-3 rounded-xl text-sm text-muted-foreground">
+                      Henüz çalışan yok. &quot;Çalışan ekle&quot; ile ekleyin.
+                    </GlassCard>
+                  </li>
+                )}
+                {employees.map((e) => (
+                  <li key={e.id} className="group">
+                    <GlassCard variant="glass" className="flex flex-row items-center justify-between gap-2 py-2.5 px-3 rounded-xl">
+                      <div className="min-w-0 flex-1 flex items-center gap-2">
+                        <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-medium text-primary">
+                            {e.name.slice(0, 2).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-medium text-foreground truncate">
+                            {e.name}
+                          </p>
+                          {e.role && (
+                            <p className="text-xs text-muted-foreground truncate">
+                              {e.role}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        className="shrink-0 text-muted-foreground hover:text-destructive opacity-70 group-hover:opacity-100"
+                        onClick={() => removeEmployee(e.id)}
+                        aria-label="Çalışanı sil"
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </GlassCard>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
         </main>
       </div>
